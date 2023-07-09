@@ -49,8 +49,8 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
             }}
           />
         )}
-        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
-          <div className="after:content relative mb-5 flex h-[629px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
+        <div className="columns-1 gap-4">
+          {/* <div className="after:content relative mb-5 flex h-[629px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
             <div className="absolute inset-0 flex items-center justify-center opacity-20">
               <span className="flex max-h-full max-w-full items-center justify-center">
                 <Bridge />
@@ -73,7 +73,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
             >
               Clone and Deploy
             </a>
-          </div>
+          </div> */}
           {images.map(({ id, public_id, format, blurDataUrl }) => (
             <Link
               key={id}
@@ -81,11 +81,11 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               as={`/p/${id}`}
               ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
               shallow
-              className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
+              className="flex justify-center after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:shadow-highlight"
             >
               <Image
                 alt="Next.js Conf photo"
-                className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
+                className="transform brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: 'translate3d(0, 0, 0)' }}
                 placeholder="blur"
                 blurDataURL={blurDataUrl}
@@ -102,34 +102,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         </div>
       </main>
       <footer className="p-6 text-center text-white/80 sm:p-12">
-        Thank you to{' '}
-        <a
-          href="https://edelsonphotography.com/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Josh Edelson
-        </a>
-        ,{' '}
-        <a
-          href="https://www.newrevmedia.com/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Jenny Morgan
-        </a>
-        , and{' '}
-        <a
-          href="https://www.garysextonphotography.com/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Gary Sexton
-        </a>{' '}
-        for the pictures.
+        Not Nothing
       </footer>
     </>
   )
