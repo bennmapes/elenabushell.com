@@ -1,11 +1,20 @@
 /* eslint-disable no-unused-vars */
+
+export interface CloudinaryAssets {
+	[folder: string]: {
+		[id: number]: ImageProps
+	}
+}
 export interface ImageProps {
   id: number
+  index: number
   height: string
   width: string
-  public_id: string
+  publicId: string
   format: string
   blurDataUrl?: string
+  folderName: string
+  folderId: string
 }
 
 export interface SharedModalProps {
