@@ -23,7 +23,7 @@ class MyDocument extends Document {
 				/>
 				<meta property="og:title" content="Elena Bushell" />
 			</Head>
-			<body className="bg-black antialiased">
+			<body className="bg-white antialiased">
 			<Main />
 			<NextScript />
 			</body>

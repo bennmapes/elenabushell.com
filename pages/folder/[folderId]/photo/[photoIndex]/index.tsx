@@ -50,7 +50,7 @@ export async function getStaticPaths() {
 	for(const folder of Object.keys(results)) {
 		for(const photo of Object.values(results[folder])) {
 			// console.log("PHOTO: ", photo);
-			const photoIndex = Number(photo.id);
+			const photoIndex = Number(photo.index);
 			fullPaths.push({ params: { photoIndex:`${photoIndex}`, folderId:`${folder}` } })
 		}
 	}

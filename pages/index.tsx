@@ -3,14 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import Bridge from "../components/Icons/Bridge";
-import Logo from "../components/Icons/Logo";
-import Modal from "../components/Modal";
-import cloudinary from "../utils/cloudinary";
-import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps, CloudinaryAssets } from "../utils/types";
-import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 import getResults from "../utils/cachedImages";
 
 const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets} ) => {
