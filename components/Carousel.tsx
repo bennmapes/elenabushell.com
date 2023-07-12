@@ -22,8 +22,8 @@ export default function Carousel({
   const [curIndex, setCurIndex] = useState(index)
 
   function closeModal() {
-    setLastViewedPhoto(currentPhoto.id)
-    router.push(`/folder/${currentPhoto.folderId}`, undefined, { shallow: true })
+    setLastViewedPhoto(currentPhoto.id);
+    router.replace(`/folder/${currentPhoto.folderId}`, undefined, { shallow: true })
   }
 
   function changePhotoIndex(newVal: number) {
@@ -33,11 +33,9 @@ export default function Carousel({
       setDirection(-1)
     }
     setCurIndex(newVal)
-    router.push(
-      {
-        query: { photoIndex: newVal },
-      },
+    router.replace(
       `/folder/${images[index].folderId}/photo/${newVal}`,
+	  undefined,
       { shallow: true }
     )
   }
@@ -50,7 +48,7 @@ export default function Carousel({
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <button
-        className="absolute inset-0 z-30 cursor-default bg-black backdrop-blur-2xl"
+        className="absolute inset-0 z-30 cursor-default bg-white backdrop-blur-2xl"
         onClick={closeModal}
       >
         {/* <Image

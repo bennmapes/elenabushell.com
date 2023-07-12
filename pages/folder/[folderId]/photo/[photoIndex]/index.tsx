@@ -13,7 +13,7 @@ const Home: NextPage = ({ currentPhoto, imagesInFolder }: { currentPhoto: ImageP
   return (
     <>
       <Head>
-        <title key="title">Elena Bushell - Photos</title>
+	  	<title key="title">Elena Bushell - { currentPhoto.folderName }</title>
         <meta property="og:image" content={currentPhotoUrl} />
         <meta name="twitter:image" content={currentPhotoUrl} />
       </Head>
@@ -28,20 +28,18 @@ export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const results = await getResults();
-  const photoId = Number(context.params?.photoIndex);
-  for(const folder of Object.keys(results)) {
-	for(const photo of Object.values(results[folder])) {
-		if(photo.id === photoId) {
-			return {
-				props: {
-				  currentPhoto: photo,
-				  imagesInFolder: Object.values(results[folder])
-				},
-			};
-		}
-	}
+  const photoIndex = Number(context.params?.photoIndex);
+  const folderId = `${context.params?.folderId}`;
+  const photo = results[folderId]?.[photoIndex];
+  if(photo) {
+	return {
+		props: {
+		  currentPhoto: photo,
+		  imagesInFolder: Object.values(results[folderId])
+		},
+	};
   }
-  throw new Error(`Unable to find photo with photoId=${photoId}`);
+  throw new Error(`Unable to find photo with photoIndex=${photoIndex}, folderId=${folderId}`);
 }
 
 export async function getStaticPaths() {
@@ -49,7 +47,6 @@ export async function getStaticPaths() {
 	const results = await getResults();
 	for(const folder of Object.keys(results)) {
 		for(const photo of Object.values(results[folder])) {
-			// console.log("PHOTO: ", photo);
 			const photoIndex = Number(photo.index);
 			fullPaths.push({ params: { photoIndex:`${photoIndex}`, folderId:`${folder}` } })
 		}

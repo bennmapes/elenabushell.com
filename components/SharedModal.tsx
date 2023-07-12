@@ -23,11 +23,9 @@ export default function SharedModal({
   direction,
 }: SharedModalProps) {
   const [loaded, setLoaded] = useState(false)
-
   let filteredImages = images?.filter((img: ImageProps) =>
-    range(index - 15, index + 15).includes(img.id)
+    range(index - 15, index + 15).includes(img.index)
   )
-
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (index < images?.length - 1) {

@@ -23,7 +23,7 @@ export default function Modal({
   const [curIndex, setCurIndex] = useState(index)
 
   function handleClose() {
-    router.push(`/folder/${images[index].folderId}`, undefined, { shallow: true })
+    router.replace(`/folder/${images[index].folderId}`, undefined, { shallow: true })
     onClose()
   }
 
@@ -34,11 +34,9 @@ export default function Modal({
       setDirection(-1)
     }
     setCurIndex(newVal)
-    router.push(
-      {
-        query: { photoIndex: newVal },
-      },
+    router.replace(
       `/folder/${images[index].folderId}/photo/${newVal}`,
+	  undefined,
       { shallow: true }
     )
   }

@@ -8,7 +8,7 @@ let cachedResults: CloudinaryAssets
 export default async function getResults() {
   if (!cachedResults) {
 	const results = await cloudinary.v2.search
-    .sort_by("public_id", "desc")
+    .sort_by("filename", "asc")
     .max_results(500)
 	.execute();
 
@@ -18,15 +18,17 @@ export default async function getResults() {
 	for (let result of results.resources) {
 		const folderId = getFolderId(result);
 		const photoId = i;
+		
 		if (!processedResults[folderId]) {
 			processedResults[folderId] = {};
 		}
 		if(folderCount[folderId] === undefined) {
 			folderCount[folderId]=0;
 		}
-		processedResults[folderId][photoId] = {
+		const photoIndex = folderCount[folderId]++;
+		processedResults[folderId][photoIndex] = {
 			id: photoId,
-			index: folderCount[folderId]++,
+			index: photoIndex,
 			height: result.height,
 			width: result.width,
 			publicId: result.public_id,
@@ -56,11 +58,6 @@ export default async function getResults() {
 
 	for (let i = 0; i < imagesWithBlurDataUrls.length; i++) {
 		const { blurUrl, folderId, photoId } = imagesWithBlurDataUrls[i];
-		// console.log("Folder Id", folderId);
-		// console.log(" Public ID", publicId);
-		if(!processedResults[folderId][photoId]) {
-			console.log(processedResults);
-		}
 		processedResults[folderId][photoId].blurDataUrl = blurUrl;
 	}
 
@@ -73,6 +70,5 @@ export default async function getResults() {
 export const getFolderId = (image: any): string => {
 	let folderName: string = image.folder? image.folder : "Uncatagorized";
 	folderName = folderName.replaceAll(" ", "-")
-	console.log("FOlder NAME", folderName);
 	return folderName;
 }

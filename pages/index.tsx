@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ImageProps, CloudinaryAssets } from "../utils/types";
 import getResults from "../utils/cachedImages";
+import { imagesInFolder } from "../utils/imagesInFolder";
 
 const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets} ) => {
-	const router = useRouter()
-  const folderIds = Object.keys(cloudinaryAssets);
+  	const folderIds = Object.keys(cloudinaryAssets);
 	const firstImageInFolder = (folderId: string): ImageProps => {
-		const folder = cloudinaryAssets[folderId];
-		return folder[Object.keys(folder)[0]];
+		return imagesInFolder(cloudinaryAssets[folderId])[0];
 	}
 
 	const imageLoader = ({src}) => {
