@@ -76,6 +76,7 @@ export default function SharedModal({
                   height={navigation ? 853 : 1280}
                   priority
                   alt="Photo"
+				  unoptimized={true}
                   onLoadingComplete={() => setLoaded(true)}
                 />
               </motion.div>
