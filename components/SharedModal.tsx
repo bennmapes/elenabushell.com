@@ -1,5 +1,4 @@
 import {
-  ArrowDownTrayIcon,
   ArrowTopRightOnSquareIcon,
   ArrowUturnLeftIcon,
   ChevronLeftIcon,
@@ -11,15 +10,13 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import { variants } from '../utils/animationVariants'
-import downloadPhoto from '../utils/downloadPhoto'
 import { range } from '../utils/range'
 import type { ImageProps, SharedModalProps } from '../utils/types'
-import Twitter from './Icons/Twitter'
 
 export default function SharedModal({
   index,
   images,
-  changePhotoId,
+  changePhotoIndex,
   closeModal,
   navigation,
   currentPhoto,
@@ -34,12 +31,12 @@ export default function SharedModal({
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (index < images?.length - 1) {
-        changePhotoId(index + 1)
+        changePhotoIndex(index + 1)
       }
     },
     onSwipedRight: () => {
       if (index > 0) {
-        changePhotoId(index - 1)
+        changePhotoIndex(index - 1)
       }
     },
     trackMouse: true,
@@ -80,7 +77,7 @@ export default function SharedModal({
                   width={navigation ? 1280 : 1920}
                   height={navigation ? 853 : 1280}
                   priority
-                  alt="Next.js Conf image"
+                  alt="Photo"
                   onLoadingComplete={() => setLoaded(true)}
                 />
               </motion.div>
@@ -99,7 +96,7 @@ export default function SharedModal({
                     <button
                       className="absolute left-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
                       style={{ transform: 'translate3d(0, 0, 0)' }}
-                      onClick={() => changePhotoId(index - 1)}
+                      onClick={() => changePhotoIndex(index - 1)}
                     >
                       <ChevronLeftIcon className="h-6 w-6" />
                     </button>
@@ -108,7 +105,7 @@ export default function SharedModal({
                     <button
                       className="absolute right-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
                       style={{ transform: 'translate3d(0, 0, 0)' }}
-                      onClick={() => changePhotoId(index + 1)}
+                      onClick={() => changePhotoIndex(index + 1)}
                     >
                       <ChevronRightIcon className="h-6 w-6" />
                     </button>
@@ -116,7 +113,7 @@ export default function SharedModal({
                 </>
               )}
               <div className="absolute top-0 right-0 flex items-center gap-2 p-3 text-white">
-                {navigation ? (
+                {navigation && (
                   <a
                     href={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentImage.publicId}.${currentImage.format}`}
                     className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
@@ -126,29 +123,8 @@ export default function SharedModal({
                   >
                     <ArrowTopRightOnSquareIcon className="h-5 w-5" />
                   </a>
-                ) : (
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20pic%20from%20Next.js%20Conf!%0A%0Ahttps://nextjsconf-pics.vercel.app/p/${index}`}
-                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                    target="_blank"
-                    title="Open fullsize version"
-                    rel="noreferrer"
-                  >
-                    <Twitter className="h-5 w-5" />
-                  </a>
                 )}
-                <button
-                  onClick={() =>
-                    downloadPhoto(
-                      `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentImage.publicId}.${currentImage.format}`,
-                      `${index}.jpg`
-                    )
-                  }
-                  className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                  title="Download fullsize version"
-                >
-                  <ArrowDownTrayIcon className="h-5 w-5" />
-                </button>
+
               </div>
               <div className="absolute top-0 left-0 flex items-center gap-2 p-3 text-white">
                 <button
@@ -172,26 +148,26 @@ export default function SharedModal({
                 className="mx-auto mt-6 mb-6 flex aspect-[3/2] h-14"
               >
                 <AnimatePresence initial={false}>
-                  {filteredImages.map(({ publicId: public_id, format, id }) => (
+                  {filteredImages.map(({ publicId: public_id, format, index: photoIndex, id }) => (
                     <motion.button
                       initial={{
                         width: '0%',
                         x: `${Math.max((index - 1) * -100, 15 * -100)}%`,
                       }}
                       animate={{
-                        scale: id === index ? 1.25 : 1,
+                        scale: photoIndex === index ? 1.25 : 1,
                         width: '100%',
                         x: `${Math.max(index * -100, 15 * -100)}%`,
                       }}
                       exit={{ width: '0%' }}
-                      onClick={() => changePhotoId(id)}
-                      key={id}
+                      onClick={() => changePhotoIndex(photoIndex)}
+                      key={photoIndex}
                       className={`${
-                        id === index
+                        photoIndex === index
                           ? 'z-20 rounded-md shadow shadow-black/50'
                           : 'z-10'
-                      } ${id === 0 ? 'rounded-l-md' : ''} ${
-                        id === images.length - 1 ? 'rounded-r-md' : ''
+                      } ${photoIndex === 0 ? 'rounded-l-md' : ''} ${
+                        photoIndex === images.length - 1 ? 'rounded-r-md' : ''
                       } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
                     >
                       <Image
@@ -199,7 +175,7 @@ export default function SharedModal({
                         width={180}
                         height={120}
                         className={`${
-                          id === index
+							photoIndex === index
                             ? 'brightness-110 hover:brightness-110'
                             : 'brightness-50 contrast-125 hover:brightness-75'
                         } h-full transform object-cover transition`}

@@ -16,18 +16,18 @@ export default function Modal({
   let overlayRef = useRef()
   const router = useRouter()
 
-  const { photoId } = router.query
-  let index = Number(photoId)
+  const { photoIndex } = router.query
+  let index = Number(photoIndex)
 
   const [direction, setDirection] = useState(0)
   const [curIndex, setCurIndex] = useState(index)
 
   function handleClose() {
-    router.push('/', undefined, { shallow: true })
+    router.push('`/folder${images[index].folderId}', undefined, { shallow: true })
     onClose()
   }
 
-  function changePhotoId(newVal: number) {
+  function changePhotoIndex(newVal: number) {
     if (newVal > index) {
       setDirection(1)
     } else {
@@ -36,22 +36,22 @@ export default function Modal({
     setCurIndex(newVal)
     router.push(
       {
-        query: { photoId: newVal },
+        query: { photoIndex: newVal },
       },
-      `/p/${newVal}`,
+      `/folder${images[index].folderId}/photo/${newVal}`,
       { shallow: true }
     )
   }
 
   useKeypress('ArrowRight', () => {
     if (index + 1 < images.length) {
-      changePhotoId(index + 1)
+      changePhotoIndex(index + 1)
     }
   })
 
   useKeypress('ArrowLeft', () => {
     if (index > 0) {
-      changePhotoId(index - 1)
+      changePhotoIndex(index - 1)
     }
   })
 
@@ -75,7 +75,7 @@ export default function Modal({
         index={curIndex}
         direction={direction}
         images={images}
-        changePhotoId={changePhotoId}
+        changePhotoIndex={changePhotoIndex}
         closeModal={handleClose}
         navigation={true}
       />

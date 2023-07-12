@@ -20,6 +20,10 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
 		const folder = cloudinaryAssets[folderId];
 		return folder[Object.keys(folder)[0]];
 	}
+
+	const imageLoader = ({src}) => {
+		return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${src}`
+	}
   return (
     <>
       <Head>
@@ -34,7 +38,7 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
             <Link
               key={folderId}
             //   href={`/?folder=${folderId}`}
-              href={`/f/${folderId}`}
+              href={`/folder/${folderId}`}
               shallow
               className="after:content group relative mb-5 block flex w-full cursor-zoom-in justify-center after:pointer-events-none after:absolute after:inset-0 after:shadow-highlight"
             >
@@ -44,7 +48,8 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
                 blurDataURL={firstImageInFolder(folderId).blurDataUrl}
-                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${firstImageInFolder(folderId).publicId}.${firstImageInFolder(folderId).format}`}
+                src={`${firstImageInFolder(folderId).publicId}.${firstImageInFolder(folderId).format}`}
+				loader={imageLoader}
                 width={720}
                 height={480}
                 sizes="(max-width: 640px) 100vw,

@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 
 export interface CloudinaryAssets {
-	[folder: string]: {
-		[id: number]: ImageProps
-	}
+	[folder: string]: ImageFolder
+}
+
+export interface ImageFolder {
+	[id: number]: ImageProps
 }
 export interface ImageProps {
   id: number
@@ -21,7 +23,7 @@ export interface SharedModalProps {
   index: number
   images?: ImageProps[]
   currentPhoto?: ImageProps
-  changePhotoId: (newVal: number) => void
+  changePhotoIndex: (newVal: number) => void
   closeModal: () => void
   navigation: boolean
   direction?: number

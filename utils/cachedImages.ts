@@ -13,6 +13,7 @@ export default async function getResults() {
 	.execute();
 
 	let processedResults: CloudinaryAssets = {};
+	let folderCount: {[folderId : string]: number} = {}
 	let i = 0;
 	for (let result of results.resources) {
 		const folderId = getFolderId(result);
@@ -20,9 +21,12 @@ export default async function getResults() {
 		if (!processedResults[folderId]) {
 			processedResults[folderId] = {};
 		}
+		if(folderCount[folderId] === undefined) {
+			folderCount[folderId]=0;
+		}
 		processedResults[folderId][photoId] = {
 			id: photoId,
-			index: Object.keys(processedResults[folderId]).length,
+			index: folderCount[folderId]++,
 			height: result.height,
 			width: result.width,
 			publicId: result.public_id,
@@ -66,6 +70,9 @@ export default async function getResults() {
   return cachedResults
 }
 
-const getFolderId = (image: any): string => {
-	return encodeURIComponent(image.folder? image.folder : "Uncatagorized")
+export const getFolderId = (image: any): string => {
+	let folderName: string = image.folder? image.folder : "Uncatagorized";
+	folderName = folderName.replaceAll(" ", "-")
+	console.log("FOlder NAME", folderName);
+	return folderName;
 }

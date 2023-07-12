@@ -3,26 +3,45 @@ import { useRouter } from 'next/router'
 import useKeypress from 'react-use-keypress'
 import type { ImageProps } from '../utils/types'
 import { useLastViewedPhoto } from '../utils/useLastViewedPhoto'
+import { imagePropsFromIndex } from '../utils/imagesInFolder'
 import SharedModal from './SharedModal'
+import { useState } from 'react'
 
 export default function Carousel({
   index,
   currentPhoto,
+  images,
 }: {
   index: number
   currentPhoto: ImageProps
+  images: ImageProps[]
 }) {
   const router = useRouter()
-  const [, setLastViewedPhoto] = useLastViewedPhoto()
+  const [, setLastViewedPhoto] = useLastViewedPhoto();
+  const [direction, setDirection] = useState(0);
+  const [curIndex, setCurIndex] = useState(index)
 
   function closeModal() {
     setLastViewedPhoto(currentPhoto.id)
-    router.push('/', undefined, { shallow: true })
+    router.push(`/folder/${currentPhoto.folderId}`, undefined, { shallow: true })
   }
 
-  function changePhotoId(newVal: number) {
-    return newVal
+  function changePhotoIndex(newVal: number) {
+    if (newVal > index) {
+      setDirection(1)
+    } else {
+      setDirection(-1)
+    }
+    setCurIndex(newVal)
+    router.push(
+      {
+        query: { photoIndex: newVal },
+      },
+      `/folder/${images[index].folderId}/photo/${newVal}`,
+      { shallow: true }
+    )
   }
+
 
   useKeypress('Escape', () => {
     closeModal()
@@ -35,7 +54,7 @@ export default function Carousel({
         onClick={closeModal}
       >
         <Image
-          src={currentPhoto.blurDataUrl}
+          src={images[curIndex].blurDataUrl}
           className="pointer-events-none h-full w-full"
           alt="blurred background"
           fill
@@ -43,11 +62,13 @@ export default function Carousel({
         />
       </button>
       <SharedModal
-        index={index}
-        changePhotoId={changePhotoId}
+        index={curIndex}
+        direction={direction}
+        changePhotoIndex={changePhotoIndex}
         currentPhoto={currentPhoto}
         closeModal={closeModal}
-        navigation={false}
+		images={images}
+        navigation={true}
       />
     </div>
   )
