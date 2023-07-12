@@ -6,9 +6,7 @@ import Link from 'next/link'
 import Modal from '../../../components/Modal'
 import type { ImageFolder, ImageProps } from '../../../utils/types'
 import getResults from '../../../utils/cachedImages'
-import { useLastViewedPhoto } from "../../../utils/useLastViewedPhoto";
-import { useEffect, useRef } from 'react'
-import { useRouter } from 'next/router'
+import { useState } from 'react'
 import React from 'react'
 import { imagesInFolder } from '../../../utils/imagesInFolder'
 
@@ -28,10 +26,6 @@ const Home: NextPage = ({ images }: { images: ImageFolder }) => {
 //       setLastViewedPhoto(null);
 //     }
 //   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
-
-  const imageLoader = ({src}) => {
-	return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${src}`
-  }
 
   return (
     <>
@@ -63,8 +57,7 @@ const Home: NextPage = ({ images }: { images: ImageFolder }) => {
                 style={{ transform: 'translate3d(0, 0, 0)' }}
                 placeholder="blur"
                 blurDataURL={blurDataUrl}
-                src={`${public_id}.${format}`}
-				loader={imageLoader}
+                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${public_id}.${format}`}
                 width={720}
                 height={480}
                 sizes="(max-width: 640px) 100vw,

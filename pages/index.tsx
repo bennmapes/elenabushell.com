@@ -13,9 +13,6 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
 		return imagesInFolder(cloudinaryAssets[folderId])[0];
 	}
 
-	const imageLoader = ({src}) => {
-		return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${src}`
-	}
   return (
     <>
       <Head>
@@ -40,8 +37,7 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
                 blurDataURL={firstImageInFolder(folderId).blurDataUrl}
-                src={`${firstImageInFolder(folderId).publicId}.${firstImageInFolder(folderId).format}`}
-				loader={imageLoader}
+                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${firstImageInFolder(folderId).publicId}.${firstImageInFolder(folderId).format}`}
                 width={720}
                 height={480}
                 sizes="(max-width: 640px) 100vw,
