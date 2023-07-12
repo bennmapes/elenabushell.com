@@ -33,7 +33,7 @@ const Home: NextPage = ({cloudinaryAssets}: {cloudinaryAssets: CloudinaryAssets}
             >
               <Image
                 alt="project photo"
-                className="transform brightness-90 transition will-change-auto group-hover:brightness-110"
+                // className="transform brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
                 blurDataURL={firstImageInFolder(folderId).blurDataUrl}
