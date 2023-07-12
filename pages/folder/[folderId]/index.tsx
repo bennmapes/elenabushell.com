@@ -47,7 +47,7 @@ const Home: NextPage = ({ images }: { images: ImageFolder }) => {
           <Modal
             images={getFolderImages()}
             onClose={() => {
-              setLastViewedPhoto(photoId as string)
+              setLastViewedPhoto(photoId)
             }}
           />
         )}
